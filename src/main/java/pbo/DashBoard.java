@@ -4,6 +4,7 @@ import pbo.structure_data.Pelanggan;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DashBoard extends BasePage {
@@ -20,8 +21,7 @@ public class DashBoard extends BasePage {
     private JLabel labelNama;
     private JLabel labelNoTelp;
 
-    public DashBoard(ArrayList<Pelanggan> pelanggans, Pelanggan selectedPelanggan) {
-        super(pelanggans, selectedPelanggan);
+    public DashBoard() {
         customizeComponents();
         setupEventHandlers();
     }
@@ -52,18 +52,20 @@ public class DashBoard extends BasePage {
         stylePrimaryLabelDefault(contentNoTelp);
 
         // Set labels
-        contentId.setText(getSelectedPelanggan().getId().toString());
-        contentNama.setText(getSelectedPelanggan().getNama());
-        contentNoTelp.setText(getSelectedPelanggan().getNoTelp());
+        Pelanggan pelanggan = Memory.getInstance().getSelectedPelanggan();
+        contentId.setText(pelanggan.getId().toString());
+        contentNama.setText(pelanggan.getNama());
+        contentNoTelp.setText(pelanggan.getNoTelp());
     }
 
     private void goToUpdateUser(){
-        UpdateUser updateUser = new UpdateUser(getPelanggans(), getSelectedPelanggan());
+        UpdateUser updateUser = new UpdateUser();
         changeWindow(updateUser);
     }
     private void goLogout(){
-        setSelectedPelanggan(null);
-        LoginSignin loginSignin = new LoginSignin(getPelanggans(), getSelectedPelanggan());
+        Memory.getInstance().setSelectedPelanggan(null);
+
+        LoginSignin loginSignin = new LoginSignin();
         changeWindow(loginSignin);
     }
     private void goDeleteAccount() {
@@ -80,52 +82,38 @@ public class DashBoard extends BasePage {
             return;
         }
 
-        try {
-            // Delete from JSON file
-            Integer currentId = getSelectedPelanggan().getId();
-            boolean deleted = JSONFileManager.deleteFromJSON(
-                    Pelanggan.class,
-                    pelanggan -> currentId.equals(pelanggan.getId())
-            );
 
-            if (deleted) {
-                // Remove from in-memory list
-                getPelanggans().removeIf(p -> p.getId().intValue() == currentId.intValue());
-                System.out.println(getPelanggans().toString());
+        // Delete Pelanggan
+        Pelanggan currentPelanggan = Memory.getInstance().getSelectedPelanggan();
+        boolean deleted = Memory.getInstance().removePelanggan(currentPelanggan);
 
-                JOptionPane.showMessageDialog(
-                        panel,
-                        "Account deleted successfully.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-
-                // Navigate back to login
-                LoginSignin loginSignin = new LoginSignin(null, null);
-                changeWindow(loginSignin);
-            } else {
-                JOptionPane.showMessageDialog(
-                        panel,
-                        "Failed to delete account. Account not found.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-        } catch (Exception ex) {
+        if (deleted) {
             JOptionPane.showMessageDialog(
                     panel,
-                    "Error deleting account: " + ex.getMessage(),
+                    "Account deleted successfully.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Navigate back to login panel
+            LoginSignin loginSignin = new LoginSignin();
+            Memory.getInstance().setSelectedPelanggan(null);
+            changeWindow(loginSignin);
+        } else { // Failed to delete
+            JOptionPane.showMessageDialog(
+                    panel,
+                    "Failed to delete account. Account not found.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
         }
     }
     private void goToListPaketWisataDalamNegeri(){
-        ListPaketWisata listPaketWisata = new ListPaketWisata(getPelanggans(), getSelectedPelanggan(), true);
+        ListPaketWisata listPaketWisata = new ListPaketWisata(true);
         changeWindow(listPaketWisata);
     }
     private void goToListPaketWisataLuarNegeri(){
-        ListPaketWisata listPaketWisata = new ListPaketWisata(getPelanggans(), getSelectedPelanggan(), false);
+        ListPaketWisata listPaketWisata = new ListPaketWisata(false);
         changeWindow(listPaketWisata);
     }
 

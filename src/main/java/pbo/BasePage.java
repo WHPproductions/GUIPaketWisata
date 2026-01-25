@@ -8,41 +8,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class BasePage {
-    private ArrayList<Pelanggan> pelanggans;
-    private Pelanggan selectedPelanggan;
-    private PaketWisata selectedPaketWisata;
-
-    public ArrayList<Pelanggan> getPelanggans() {
-        return pelanggans;
-    }
-    public void setPelanggans(ArrayList<Pelanggan> pelanggans) {
-        this.pelanggans = pelanggans;
-    }
-    public Pelanggan getSelectedPelanggan() {
-        return selectedPelanggan;
-    }
-    public void setSelectedPelanggan(Pelanggan selectedPelanggan) {
-        this.selectedPelanggan = selectedPelanggan;
-    }
-    public PaketWisata getSelectedPaketWisata() {
-        return selectedPaketWisata;
-    }
-    public void setSelectedPaketWisata(PaketWisata selectedPaketWisata) {
-        this.selectedPaketWisata = selectedPaketWisata;
-    }
 
     public BasePage() {
-        this(new ArrayList<>(), null, null);
-    }
 
-    public BasePage(ArrayList<Pelanggan> pelanggans, Pelanggan selectedPelanggan) {
-        this(pelanggans, selectedPelanggan, null);
-    }
-
-    public BasePage(ArrayList<Pelanggan> pelanggans, Pelanggan selectedPelanggan, PaketWisata selectedPaketWisata) {
-        this.pelanggans = pelanggans;
-        this.selectedPelanggan = selectedPelanggan;
-        this.selectedPaketWisata = selectedPaketWisata;
     }
 
     protected abstract JPanel getMainPanel();
@@ -57,10 +25,10 @@ public abstract class BasePage {
         frame.setVisible(true);
     }
     public void changeWindow(BasePage page) {
-        // Get the current frame and dispose it properly
+        // Get the current frame and dispose of it properly
         JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(getMainPanel());
 
-        // Create and show new frame
+        // Create and show a new frame
         JFrame newFrame = new JFrame(page.getTitle());
         newFrame.setContentPane(page.getMainPanel());
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,7 +75,7 @@ public abstract class BasePage {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setBorder(BorderFactory.createEmptyBorder(12, 25, 12, 25));
 
-        // Add rounded appearance effect
+        // Add a rounded appearance effect
         button.setOpaque(true);
     }
     protected void stylePrimaryLabelDefault(JLabel label) {

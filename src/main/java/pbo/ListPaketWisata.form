@@ -51,7 +51,9 @@
             <children>
               <component id="d5255" class="javax.swing.JTable" binding="tabelPaketWisata">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <font name="Segoe UI" size="16" style="0"/>
+                </properties>
               </component>
             </children>
           </scrollpane>

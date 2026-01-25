@@ -20,8 +20,7 @@ public class LoginSignin extends BasePage {
     private JLabel idLabel;
     private JLabel passwordLabel;
 
-    public LoginSignin(ArrayList<Pelanggan> testPelanggans, Pelanggan pelanggan0) {
-        super(testPelanggans, pelanggan0);
+    public LoginSignin() {
         customizeComponents();
         setupEventHandlers();
     }
@@ -53,7 +52,7 @@ public class LoginSignin extends BasePage {
         // Login button handler
         loginButton.addActionListener(e -> handleLogin());
 
-        // Sign up button handler
+        // Signup button handler
         signupButton.addActionListener(e -> handleSignup());
     }
 
@@ -83,40 +82,29 @@ public class LoginSignin extends BasePage {
         }
 
         // Check credentials
-        try {
-            List<Pelanggan> users = JSONFileManager.readFromJSON(Pelanggan.class);
+        Pelanggan foundUser = Memory.getInstance().getPelangganById(id);
 
-            Pelanggan foundUser = users.stream()
-                    .filter(user -> user.getId() == id)
-                    .findFirst()
-                    .orElse(null);
-
-            if (foundUser == null) {
-                JOptionPane.showMessageDialog(panel,
-                        "Pelanggan ID not found",
-                        "Login Error",
-                        JOptionPane.WARNING_MESSAGE);
-            } else if (!foundUser.getPassword().equals(password)) {
-                JOptionPane.showMessageDialog(panel,
-                        "Incorrect password",
-                        "Login Error",
-                        JOptionPane.WARNING_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(panel,
-                        "Login successful!",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                // Navigate to Dashboard
-                SwingUtilities.getWindowAncestor(panel).dispose();
-                BasePage dashboard = new DashBoard((ArrayList<Pelanggan>) users, foundUser);
-                changeWindow(dashboard);
-            }
-        } catch (IOException ex) {
+        if (foundUser == null) {
             JOptionPane.showMessageDialog(panel,
-                    "Error reading user data: " + ex.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+                    "Pelanggan ID not found",
+                    "Login Error",
+                    JOptionPane.WARNING_MESSAGE);
+        } else if (!foundUser.getPassword().equals(password)) {
+            JOptionPane.showMessageDialog(panel,
+                    "Incorrect password",
+                    "Login Error",
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(panel,
+                    "Login successful!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            // Navigate to Dashboard
+            SwingUtilities.getWindowAncestor(panel).dispose();
+            Memory.getInstance().setSelectedPelanggan(foundUser);
+            BasePage dashboard = new DashBoard();
+            changeWindow(dashboard);
         }
     }
 
@@ -145,41 +133,29 @@ public class LoginSignin extends BasePage {
             return;
         }
 
-        // Check for duplicate ID and create new user
-        try {
-            JSONFileManager.setFileName("users.json");
-            List<Pelanggan> users = JSONFileManager.readFromJSON(Pelanggan.class);
+        // Check for duplicate ID and create a new user
+        List<Pelanggan> users = Memory.getInstance().getPelanggans();
 
-            // Check for duplicate ID
-            for (Pelanggan user : users) {
-                if (user.getId() == id) {
-                    JOptionPane.showMessageDialog(panel,
-                            "Pelanggan ID already exists. Please choose a different ID.",
-                            "Sign Up Error",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
+        // Check for duplicate ID
+        for (Pelanggan user : users) {
+            if (user.getId().equals(id)) {
+                JOptionPane.showMessageDialog(panel,
+                        "Pelanggan ID already exists. Please choose a different ID.",
+                        "Sign Up Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
             }
-
-            // Create new user
-            Pelanggan newUser = new Pelanggan(id, password);
-            JSONFileManager.appendToJSON(newUser, Pelanggan.class);
-
-            JOptionPane.showMessageDialog(panel,
-                    "Sign up successful! You can now login.",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-            // Clear fields
-            loginField.setText("");
-            passwordField.setText("");
-
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(panel,
-                    "Error saving user data: " + ex.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
         }
+
+        // Create a new user
+        Pelanggan newUser = new Pelanggan(id, password);
+        Memory.getInstance().addPelanggan(newUser);
+
+        JOptionPane.showMessageDialog(panel,
+                "Sign up successful! You can now login.",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     @Override

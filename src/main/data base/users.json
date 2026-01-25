@@ -1,7 +1,35 @@
 [ {
-  "id" : 123,
-  "password" : "123",
-  "nama" : "Isi Nama",
-  "noTelp" : "Isi Nomor Telepon",
-  "daftarPaket" : [ ]
+  "id" : 0,
+  "password" : "password0",
+  "nama" : "Jessica",
+  "noTelp" : "089655306907",
+  "daftarPaketDalamNegeri" : [ {
+    "id" : 1,
+    "namaPaket" : "Mempelajari Budaya Mahmud",
+    "destinasi" : "Bandung",
+    "harga" : 500000.0,
+    "durasi" : 1,
+    "daerah" : "Mahmud",
+    "kategori" : "Budaya",
+    "diskon" : 10.0
+  }, {
+    "id" : 2,
+    "namaPaket" : "Wisata Candi ",
+    "destinasi" : "Jogja",
+    "harga" : 2000000.0,
+    "durasi" : 5,
+    "daerah" : "Badrawati",
+    "kategori" : "Budaya",
+    "diskon" : 20.0
+  } ],
+  "daftarPaketLuarNegeri" : [ {
+    "id" : 3,
+    "namaPaket" : "Fuji Hiking Trip",
+    "destinasi" : "Yamanashi",
+    "harga" : 5000000.0,
+    "durasi" : 3,
+    "negara" : "Jepang",
+    "tourGuide" : "Mendaki di gunung",
+    "biayaVisa" : 20.0
+  } ]
 } ]

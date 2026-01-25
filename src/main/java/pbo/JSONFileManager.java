@@ -22,24 +22,21 @@ public class JSONFileManager {
     public static String getFilePath() {
         return FILE_PATH;
     }
-
     public static String getFileName() {
         return FILE_NAME;
     }
-
     public static void setFilePath(String filePath) {
         FILE_PATH = filePath;
     }
-
     public static void setFileName(String fileName) {
         FILE_NAME = fileName;
     }
-
     public static String getSaveLoadFilePath() {
         return FILE_PATH + FILE_NAME;
     }
 
     // Generic method to read JSON file and convert to List of objects
+    // Parameter: clazz - The class type of the objects in the JSON file
     public static <T> List<T> readFromJSON(Class<T> clazz) throws IOException {
         File file = new File(getSaveLoadFilePath());
 
@@ -113,60 +110,60 @@ public class JSONFileManager {
         }
     }
 
-    // Add single item to existing JSON array
-    public static <T> void appendToJSON(T newItem, Class<T> clazz) throws IOException {
-        List<T> existingData = readFromJSON(clazz);
-        existingData.add(newItem);
-        writeToJSON(existingData);
-    }
-
-    // Update item in JSON array based on condition
-    public static <T> boolean updateInJSON(T updatedItem, Class<T> clazz, ItemMatcher<T> matcher) throws IOException {
-        List<T> data = readFromJSON(clazz);
-        boolean found = false;
-
-        for (int i = 0; i < data.size(); i++) {
-            if (matcher.matches(data.get(i))) {
-                data.set(i, updatedItem);
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            writeToJSON(data);
-        }
-
-        return found;
-    }
-
-    // Delete item from JSON array based on condition
-    public static <T> boolean deleteFromJSON(Class<T> clazz, ItemMatcher<T> matcher) throws IOException {
-        List<T> data = readFromJSON(clazz);
-        boolean removed = data.removeIf(matcher::matches);
-
-        if (removed) {
-            writeToJSON(data);
-        }
-
-        return removed;
-    }
-
-    // Check if file exists
-    public static boolean fileExists() {
-        File file = new File(getSaveLoadFilePath());
-        return file.exists();
-    }
-
-    // Delete the JSON file
-    public static boolean deleteFile() {
-        File file = new File(getSaveLoadFilePath());
-        return file.exists() && file.delete();
-    }
-
-    // Functional interface for matching items
-    @FunctionalInterface
-    public interface ItemMatcher<T> {
-        boolean matches(T item);
-    }
+//    // Add single item to existing JSON array
+//    public static <T> void appendToJSON(T newItem, Class<T> clazz) throws IOException {
+//        List<T> existingData = readFromJSON(clazz);
+//        existingData.add(newItem);
+//        writeToJSON(existingData);
+//    }
+//
+//    // Update item in JSON array based on condition
+//    public static <T> boolean updateInJSON(T updatedItem, Class<T> clazz, ItemMatcher<T> matcher) throws IOException {
+//        List<T> data = readFromJSON(clazz);
+//        boolean found = false;
+//
+//        for (int i = 0; i < data.size(); i++) {
+//            if (matcher.matches(data.get(i))) {
+//                data.set(i, updatedItem);
+//                found = true;
+//                break;
+//            }
+//        }
+//
+//        if (found) {
+//            writeToJSON(data);
+//        }
+//
+//        return found;
+//    }
+//
+//    // Delete item from JSON array based on condition
+//    public static <T> boolean deleteFromJSON(Class<T> clazz, ItemMatcher<T> matcher) throws IOException {
+//        List<T> data = readFromJSON(clazz);
+//        boolean removed = data.removeIf(matcher::matches);
+//
+//        if (removed) {
+//            writeToJSON(data);
+//        }
+//
+//        return removed;
+//    }
+//
+//    // Check if file exists
+//    public static boolean fileExists() {
+//        File file = new File(getSaveLoadFilePath());
+//        return file.exists();
+//    }
+//
+//    // Delete the JSON file
+//    public static boolean deleteFile() {
+//        File file = new File(getSaveLoadFilePath());
+//        return file.exists() && file.delete();
+//    }
+//
+//    // Functional interface for matching items
+//    @FunctionalInterface
+//    public interface ItemMatcher<T> {
+//        boolean matches(T item);
+//    }
 }

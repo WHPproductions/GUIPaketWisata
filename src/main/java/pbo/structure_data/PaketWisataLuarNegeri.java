@@ -24,6 +24,10 @@ public class PaketWisataLuarNegeri extends PaketWisata{
         this.biayaVisa = biayaVisa;
     }
 
+    public PaketWisataLuarNegeri(){
+
+    }
+
     public PaketWisataLuarNegeri(
             int id,
             String namaPaket,
@@ -38,6 +42,24 @@ public class PaketWisataLuarNegeri extends PaketWisata{
         this.negara = negara;
         this.tourGuide = tourGuide;
         this.biayaVisa = biayaVisa;
+    }
+
+    @Override
+    public PaketWisata updatePaketWisata(PaketWisataDalamNegeri paket) {
+        return null;
+    }
+
+    @Override
+    public PaketWisata updatePaketWisata(PaketWisataLuarNegeri paket) {
+        setId(paket.getId());
+        setNamaPaket(paket.getNamaPaket());
+        setDestinasi(paket.getDestinasi());
+        setHarga(paket.getHarga());
+        setDurasi(paket.getDurasi());
+        setNegara(paket.getNegara());
+        setTourGuide(paket.getTourGuide());
+        setBiayaVisa(paket.getBiayaVisa());
+        return this;
     }
 
     @Override

@@ -46,7 +46,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Lihat Paket Wisata"/>
+              <text value="Lihat Paket Wisata Dalam Negeri"/>
             </properties>
           </component>
           <vspacer id="28863">

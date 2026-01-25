@@ -24,6 +24,10 @@ public class PaketWisataDalamNegeri extends PaketWisata{
         this.diskon = diskon;
     }
 
+    public PaketWisataDalamNegeri(){
+
+    }
+
     public PaketWisataDalamNegeri(
             int id,
             String namaPaket,
@@ -38,6 +42,24 @@ public class PaketWisataDalamNegeri extends PaketWisata{
         this.daerah = daerah;
         this.kategori = kategori;
         this.diskon = diskon;
+    }
+
+    @Override
+    public PaketWisata updatePaketWisata(PaketWisataLuarNegeri paket) {
+        return null;
+    }
+
+    @Override
+    public PaketWisataDalamNegeri updatePaketWisata(PaketWisataDalamNegeri paket) {
+            setId(paket.getId());
+            setNamaPaket(paket.getNamaPaket());
+            setDestinasi(paket.getDestinasi());
+            setHarga(paket.getHarga());
+            setDurasi(paket.getDurasi());
+            setDaerah(paket.getDaerah());
+            setKategori(paket.getKategori());
+            setDiskon(paket.getDiskon());
+            return this;
     }
 
     @Override

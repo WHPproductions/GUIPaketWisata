@@ -19,8 +19,7 @@ public class ListPaketWisata extends BasePage {
     private JButton cariButton;
     private final boolean isDalamNegeriMode;
 
-    public ListPaketWisata(ArrayList<Pelanggan> pelanggans, Pelanggan selectedPelanggan, boolean isDalamNegeriMode) {
-        super(pelanggans, selectedPelanggan);
+    public ListPaketWisata(boolean isDalamNegeriMode) {
         this.isDalamNegeriMode = isDalamNegeriMode;
         customizeComponents();
         setupEventHandlers();
@@ -28,19 +27,14 @@ public class ListPaketWisata extends BasePage {
     }
 
     private void initializeTable() {
-        ArrayList<PaketWisata> paketWisataList = new ArrayList<>();
-        // Filter by mode
-        for (PaketWisata paketWisata: getSelectedPelanggan().getDaftarPaket()) {
-            if (paketWisata instanceof PaketWisataDalamNegeri && isDalamNegeriMode){
-                paketWisataList.add(paketWisata);
-            } else if (paketWisata instanceof PaketWisataLuarNegeri && !isDalamNegeriMode){
-                paketWisataList.add(paketWisata);
-            }
-        }
-
         // Make the table array model
+        ArrayList<? extends PaketWisata> paketWisataList = isDalamNegeriMode ?
+            Memory.getInstance().getSelectedPelanggan().getDaftarPaketDalamNegeri() :
+            Memory.getInstance().getSelectedPelanggan().getDaftarPaketLuarNegeri();
+    
         Object[][] data = new Object[paketWisataList.size()][5];
-        for (PaketWisata paket : paketWisataList ) {
+    
+        for (PaketWisata paket : paketWisataList) {
             int row = paketWisataList.indexOf(paket);
             data[row][0] = paket.getId();
             data[row][1] = paket.getNamaPaket();
@@ -51,7 +45,7 @@ public class ListPaketWisata extends BasePage {
         // Populate the table UI
         DefaultTableModel tableModel = new DefaultTableModel(
                 data,
-                getSelectedPelanggan().getColumnNames()
+                Memory.getInstance().getSelectedPelanggan().getColumnNames()
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -59,22 +53,49 @@ public class ListPaketWisata extends BasePage {
             }
         };
 
+        // Apply styles and populate the table
         tabelPaketWisata.setModel(tableModel);
     }
 
     private void goToDashboard(){
-        DashBoard dashBoard = new DashBoard(getPelanggans(), getSelectedPelanggan());
+        DashBoard dashBoard = new DashBoard();
         changeWindow(dashBoard);
     }
     private void goToCreatePaketWisata(){
         UpdateOrCreatePaketWisata createPaketWisata = new UpdateOrCreatePaketWisata(
-                getPelanggans(),
-                getSelectedPelanggan(),
                 isDalamNegeriMode,
-                true,  // isNewPaketMode = true for creating new
-                null   // selectedPaketWisata = null for new paket
+                true  // isNewPaketMode = true for creating new Paket Wisata
         );
         changeWindow(createPaketWisata);
+    }
+    private void goToDetailPaketWisata(){
+        int id;
+        try {
+           id = Integer.parseInt(inputCari.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(panel,
+                    "ID harus berupa angka!",
+                    "Input Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Set paket wisata dalam memori
+        PaketWisata paketWisata = isDalamNegeriMode
+                ? Memory.getInstance().findPaketWisataDalamNegeriByID(id)
+                : Memory.getInstance().findPaketWisataLuarNegeriByID(id);
+        if (paketWisata == null) {
+            JOptionPane.showMessageDialog(panel,
+                    "Paket Wisata dengan ID tersebut tidak ditemukan!",
+                    "Paket Wisata Tidak Ditemukan",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Memory.getInstance().setSelectedPaketWisata(paketWisata);
+
+        DetailPaketWisata detailPaketWisata = new DetailPaketWisata(isDalamNegeriMode);
+        changeWindow(detailPaketWisata);
     }
 
     @Override
@@ -104,6 +125,7 @@ public class ListPaketWisata extends BasePage {
     protected void setupEventHandlers() {
         exitButton.addActionListener(e -> goToDashboard());
         newPaketButton.addActionListener(e -> goToCreatePaketWisata());
+        cariButton.addActionListener(e -> goToDetailPaketWisata());
     }
 
     private void styleTable() {
@@ -126,14 +148,15 @@ public class ListPaketWisata extends BasePage {
         // Center align cell content
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tabelPaketWisata.getColumnCount(); i++) {
-            tabelPaketWisata.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
+
+        tabelPaketWisata.setDefaultRenderer(Object.class, centerRenderer);
     }
 
     @Override
     protected String getTitle() {
-        return "List Paket Wisata";
+        return isDalamNegeriMode
+                ? "List Paket Wisata Dalam Negeri"
+                : "List Paket Wisata Luar Negeri";
     }
 
     @Override

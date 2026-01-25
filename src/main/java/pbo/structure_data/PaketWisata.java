@@ -7,6 +7,8 @@ public abstract class PaketWisata {
     private double harga;
     private int durasi;
 
+    public PaketWisata(){}
+
     public PaketWisata(int id, String namaPaket, String destinasi, double harga, int durasi) {
         this.id = id;
         this.namaPaket = namaPaket;
@@ -42,19 +44,8 @@ public abstract class PaketWisata {
         this.durasi = durasi;
     }
 
-    public PaketWisata updatePaketWisata(
-            int id,
-            String namaPaket,
-            String destinasi,
-            double harga,
-            int durasi) {
-        this.id = id;
-        this.namaPaket = namaPaket;
-        this.destinasi = destinasi;
-        this.harga = harga;
-        this.durasi = durasi;
-        return this;
-    }
+    public abstract PaketWisata updatePaketWisata(PaketWisataDalamNegeri paket);
+    public abstract PaketWisata updatePaketWisata(PaketWisataLuarNegeri paket);
 
     public abstract double hitungHarga();
 }
