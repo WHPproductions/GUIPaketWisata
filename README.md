@@ -23,25 +23,25 @@ Aplikasi GUI desktop untuk mengelola paket wisata/tur di Indonesia. Ini adalah a
 - Manajer File JSON (java.io, FileReader, FileWriter)
 
 ## Fitur Utama:
-[b]Manajemen Pengguna[/b]
+**Manajemen Pengguna**
 - Otentikasi Login/Masuk
 - Manajemen akun pengguna
 - Manajemen Paket Wisata
 - Tampilan Pengguna dan Paket Wisata yang ringkas
 
-[b]Manajemen Paket Wisata[/b]
+**Manajemen Paket Wisata**
 - Tampilan daftar semua paket wisata menampilkan paket dalam tabel dengan ID, nama, tujuan, harga, dan durasi
 - Tampilan detail menunjukkan informasi lengkap tentang paket tertentu
 - Formulir Buat/Perbarui paket untuk menambahkan paket baru atau mengedit yang sudah ada
 - Fungsi pencarian/filter untuk menemukan paket
 - Dua kategori: Paket domestik ("Dalam Negeri") dan paket internasional ("Luar Negeri")
 
-[b]Dasbor[/b]
+**Dasbor**
 - Pusat informasi pengguna
 - Akses cepat ke paket domestik dan internasional
 - Opsi logout dan penghapusan akun
 
-[b]Desain UI[/b]
+**Desain UI**
 - Antarmuka modern dan bersih dengan skema warna biru/merah
 - Tombol biru untuk tindakan utama, merah untuk tindakan yang merusak
 - Tabel dan kolom teks dengan gaya konsisten, dilengkapi dengan border dan padding
