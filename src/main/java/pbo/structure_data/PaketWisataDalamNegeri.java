@@ -61,9 +61,4 @@ public class PaketWisataDalamNegeri extends PaketWisata{
             setDiskon(paket.getDiskon());
             return this;
     }
-
-    @Override
-    public double hitungHarga() {
-        return getHarga() - (getHarga() * diskon);
-    }
 }

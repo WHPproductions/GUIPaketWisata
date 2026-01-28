@@ -61,9 +61,4 @@ public class PaketWisataLuarNegeri extends PaketWisata{
         setBiayaVisa(paket.getBiayaVisa());
         return this;
     }
-
-    @Override
-    public double hitungHarga() {
-        return getHarga() + getBiayaVisa();
-    }
 }

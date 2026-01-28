@@ -13,6 +13,7 @@ public class Pelanggan {
     private ArrayList<PaketWisataDalamNegeri> daftarPaketDalamNegeri;
     private ArrayList<PaketWisataLuarNegeri> daftarPaketLuarNegeri;
 
+    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -50,6 +51,7 @@ public class Pelanggan {
         this.daftarPaketLuarNegeri = daftarPaketLuarNegeri;
     }
 
+    // Constructos
     public Pelanggan() {
         this(100, "Isi Password");
     }

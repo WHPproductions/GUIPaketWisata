@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSONFileManager {
+public final class JSONFileManager {
     private static String FILE_PATH = "C:\\Users\\USER\\Desktop\\PBO\\GUIPaketWisata\\GUIPaketWisata\\src\\main\\data base\\";
     private static String FILE_NAME = "users.json";
     private static final ObjectMapper mapper = new ObjectMapper();

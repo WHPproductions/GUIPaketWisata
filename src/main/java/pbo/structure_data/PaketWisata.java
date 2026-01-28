@@ -46,6 +46,4 @@ public abstract class PaketWisata {
 
     public abstract PaketWisata updatePaketWisata(PaketWisataDalamNegeri paket);
     public abstract PaketWisata updatePaketWisata(PaketWisataLuarNegeri paket);
-
-    public abstract double hitungHarga();
 }
